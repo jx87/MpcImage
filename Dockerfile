@@ -10,7 +10,7 @@ ADD tailsitter-planning /home/tailsitter-planning
 WORKDIR /home
 
 #下载acados&python interface
-RUN apt-get install python3-pip -y \
+RUN apt-get install python3-pip -y\
 && apt-get install git \
 && git clone https://github.com/acados/acados.git \
 && cd acados \
