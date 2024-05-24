@@ -1,7 +1,4 @@
 #! /usr/bin/bash
-export CC="/usr/lib/ccache/gcc"
-export CXX="/usr/lib/ccache/g++"
-export CCACHE_DIR="$HOME/.cache/ccache/"
 
 if [ $ROS_VERSION == 1 ] || [ $ROS_DISTRO == 'foxy' ]; then
   echo "ROS_DISTRO is $ROS_DISTRO! DON'T SETUP ACADOS"
