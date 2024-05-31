@@ -28,3 +28,14 @@ sudo usermod -aG docker $USER
 ```shell
 docker build .
 ```
+
+# Create a image tagged MPCimage
+```shell
+docker build -f Dockerfile -t MPCimgae
+```
+
+# Create a container named myMPC
+```shell
+docker run -d -it --name myMPC MPCimgae /bin/bash
+```
+
