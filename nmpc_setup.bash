@@ -2,7 +2,11 @@
 
 if [ $ROS_VERSION == 1 ] || [ $ROS_DISTRO == 'foxy' ]; then
   echo "ROS_DISTRO is $ROS_DISTRO! DON'T SETUP ACADOS"
+<<<<<<< HEAD
   export TAILSITTER_PLANNING_DIR="/home/$USER/tailsitter-planning"
+=======
+  export TAILSITTER_PLANNING_DIR="/home/$USER/pnc_tail-sitter"
+>>>>>>> 76fbcfd8e7ca75789d42eeba1469a4ac3584d802
   export NMPC_DIR="$TAILSITTER_PLANNING_DIR/src/nmpc"
   export PATH=$PATH:$NMPC_DIR/scripts/
   export PYTHONPATH="$PYTHONPATH:$NMPC_DIR"
@@ -19,7 +23,11 @@ else
   echo "You are in a container or WSL machine, running acados in intrinsic python environment."
   fi
 
+<<<<<<< HEAD
   export TAILSITTER_PLANNING_DIR="$HOME/tailsitter-planning"
+=======
+  export TAILSITTER_PLANNING_DIR="$HOME/pnc_tail-sitter"
+>>>>>>> 76fbcfd8e7ca75789d42eeba1469a4ac3584d802
   export NMPC_DIR="$TAILSITTER_PLANNING_DIR/src/nmpc"
   export PYTHONPATH="$PYTHONPATH:$NMPC_DIR"
 
@@ -35,6 +43,7 @@ alias exp='python $NMPC_DIR/experiments/minco_exp.py'
 alias print_metrics='python $NMPC_DIR/metrics/rmse.py'
 export PATH=$PATH:$NMPC_DIR/scripts/
 alias dds_serial='MicroXRCEAgent serial --dev /dev/ttyUSB0 -b 921600'
+<<<<<<< HEAD
 
 
 #todo
@@ -44,3 +53,5 @@ alias dds_serial='MicroXRCEAgent serial --dev /dev/ttyUSB0 -b 921600'
 && echo 'ACADOS_ROOT=/root/acados'>>/root/.bashrc \
 && echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ACADOS_ROOT/lib'>>/root/.bashrc \
 && echo 'export ACADOS_SOURCE_DIR=$ACADOS_ROOT'>>/root/.bashrc \
+=======
+>>>>>>> 76fbcfd8e7ca75789d42eeba1469a4ac3584d802
