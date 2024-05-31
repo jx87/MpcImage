@@ -10,15 +10,10 @@ ADD nmpc_setup.bash /home/nmpc_setup.bash
 
 WORKDIR /home
 
-<<<<<<< HEAD
-RUN xargs -a packages.txt apt-get install \
-&& pip install requirements.txt \
-=======
 #下载acados&python interface
 RUN apt-get install python3-pip -y\
 && apt-get install git \
 && git clone https://github.com/acados/acados.git \
->>>>>>> 76fbcfd8e7ca75789d42eeba1469a4ac3584d802
 && cd acados \
 && mkdir -p build \
 && cd build \
