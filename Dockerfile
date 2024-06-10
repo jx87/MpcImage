@@ -7,13 +7,18 @@ LABEL maintainer="Jiex" email="Jiex@mail2.sysu.edu.cn"
 ADD tailsitter-planning /home/tailsitter-planning
 ADD acados /home/acados
 ADD nmpc_setup.bash /home/nmpc_setup.bash
+ADD packages.txt /home/packages.txt
+ADD requirements.txt /home/requirements.txt
 
 WORKDIR /home
 
-#下载acados&python interface
-RUN apt-get install python3-pip -y\
-&& apt-get install git \
-&& git clone https://github.com/acados/acados.git \
+RUN echo "deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal main restricted" | sudo tee -a /etc/apt/sources.list \
+&& echo "deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal main restricted" | sudo tee -a /etc/apt/sources.list\
+&& sudo apt update -y
+
+
+
+RUN xargs -a packages.txt apt-get install -y\
 && cd acados \
 && mkdir -p build \
 && cd build \
@@ -21,8 +26,11 @@ RUN apt-get install python3-pip -y\
 && make install -j4 	
 
 RUN export PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple \
-&& echo 'source /home/nmpc_setup.bash'>>/root/.bashrc \
-&& cd /home/tailsitter-planning \
-&& colcon build \
+&& pip install -r requirements.txt 
 
+RUN cd /home/tailsitter-planning \
+&& source /opt/ros/humble/setup.bash \
+&& colcon build 
+
+#echo 'source /home/nmpc_setup.bash'>>/root/.bashrc \
 CMD echo "...success!"
