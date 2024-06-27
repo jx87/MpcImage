@@ -1,5 +1,6 @@
 pyquaternion==0.9.9
 pandas==2.2.2
+numpy==1.24.0
 -e acados/interfaces/acados_template
 
 

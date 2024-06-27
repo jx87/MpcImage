@@ -13,24 +13,25 @@ ADD requirements.txt /home/requirements.txt
 WORKDIR /home
 
 RUN echo "deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal main restricted" | sudo tee -a /etc/apt/sources.list \
-&& echo "deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal main restricted" | sudo tee -a /etc/apt/sources.list\
-&& sudo apt update -y
+  && echo "deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal main restricted" | sudo tee -a /etc/apt/sources.list\
+  && sudo apt update -y
 
 
 
 RUN xargs -a packages.txt apt-get install -y\
-&& cd acados \
-&& mkdir -p build \
-&& cd build \
-&& cmake -DACADOS_WITH_OSQP=ON .. \
-&& make install -j4 	
+  && cd acados \
+  && mkdir -p build \
+  && cd build \
+  && cmake -DACADOS_WITH_OSQP=ON .. \
+  && make install -j4 	
 
 RUN export PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple \
-&& pip install -r requirements.txt 
+  && pip install -r requirements.txt 
 
 RUN cd /home/tailsitter-planning \
-&& source /opt/ros/humble/setup.bash \
-&& colcon build 
+  && source /opt/ros/humble/setup.bash \
+  && colcon build \
+  && source /home/nmpc.bash
 
 #echo 'source /home/nmpc_setup.bash'>>/root/.bashrc \
 CMD echo "...success!"
