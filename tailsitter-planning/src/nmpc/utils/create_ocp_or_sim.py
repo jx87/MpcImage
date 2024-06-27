@@ -57,10 +57,10 @@ def create_ocp_solver_with_model_defined(model) -> AcadosOcp:
     ocp.dims.nsh_0 = 0
     
     ocp.constraints.lh = np.array([colli_r + colli_r_safe])
-    ocp.constraints.uh = np.array([np.inf])
+    ocp.constraints.uh = np.array([1000.0])
     
     ocp.constraints.lh_0 = np.array([colli_r + colli_r_safe])
-    ocp.constraints.uh_0 = np.array([np.inf])
+    ocp.constraints.uh_0 = np.array([1000.0])
 
 
 
