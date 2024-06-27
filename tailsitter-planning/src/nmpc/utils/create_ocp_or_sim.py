@@ -1,8 +1,8 @@
-from acados_template import AcadosOcp, AcadosSim, AcadosSimSolver, AcadosOcpSolver
+from acados_template import AcadosOcp, AcadosSim, AcadosSimSolver, AcadosOcpSolver, AcadosModel
 from config.config import MpcConfig
 import numpy as np
 from model import quadrotorFLU, odometry_model
-
+import casadi as ca
 import time
 
 def create_ocp_solver_with_model_defined(model) -> AcadosOcp:
@@ -31,8 +31,39 @@ def create_ocp_solver_with_model_defined(model) -> AcadosOcp:
     ocp.cost.cost_type = "LINEAR_LS"
     ocp.cost.cost_type_e = "LINEAR_LS"
 
+    
     ny = nx + nu
     ny_e = nx
+
+    sym_p = ocp.model.x[:3]
+    # Assuming the collision is located at [3,3,2]
+    # We only horizontally avoid the collision
+    sym_p_h = sym_p[:2]
+    colli_pos = np.array([3, 3])
+    colli_r = 2
+    colli_r_safe = 0.5
+    
+    constr_h = ca.norm_2(sym_p_h - colli_pos)
+    
+
+    
+    model:AcadosModel = ocp.model
+    model.con_h_expr = constr_h
+    model.con_h_expr_0 = constr_h
+    
+    ocp.dims.nh = 1
+    ocp.dims.nh_0 = 1
+    ocp.dims.nsh = 0
+    ocp.dims.nsh_0 = 0
+    
+    ocp.constraints.lh = np.array([colli_r + colli_r_safe])
+    ocp.constraints.uh = np.array([np.inf])
+    
+    ocp.constraints.lh_0 = np.array([colli_r + colli_r_safe])
+    ocp.constraints.uh_0 = np.array([np.inf])
+
+
+
 
     ocp.cost.W_e = We_mat
     ocp.cost.W = W_mat
@@ -61,8 +92,9 @@ def create_ocp_solver_with_model_defined(model) -> AcadosOcp:
     ocp.solver_options.hessian_approx = "GAUSS_NEWTON"  # 'GAUSS_NEWTON', 'EXACT'
     # ocp.solver_options.regularize_method = "PROJECT_REDUC_HESS"
     ocp.solver_options.integrator_type = "ERK"
-    ocp.solver_options.nlp_solver_type = "SQP_RTI"  # SQP_RTI, SQP
-    ocp.solver_options.nlp_solver_max_iter = 20
+    ocp.solver_options.nlp_solver_type = "SQP"  # SQP_RTI, SQP
+    ocp.solver_options.nlp_solver_max_iter = 5
+    ocp.solver_options.qp_solver_iter_max = 20
     # ocp.solver_options.qp_solver_iter_max = 20
     # ocp.solver_options.qp = 20
     # ocp.solver_options.nlp_solver_tol_comp = 1e1
